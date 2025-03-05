@@ -214,7 +214,7 @@ func main() {
 	cacheServer := NewCacheServer(5*time.Minute, targetHost)
 
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    fmt.Sprintf(":%s", os.Getenv("PORT")),
 		Handler: cacheServer,
 	}
 

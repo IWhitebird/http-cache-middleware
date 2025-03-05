@@ -212,13 +212,14 @@ func main() {
 	}
 
 	cacheServer := NewCacheServer(5*time.Minute, targetHost)
+	port := os.Getenv("PORT")
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%s", os.Getenv("PORT")),
+		Addr:    fmt.Sprintf(":%s", port),
 		Handler: cacheServer,
 	}
 
-	log.Printf("Cache server starting on :8080, forwarding to %s", targetHost)
+	log.Printf("Cache server starting on :%s, forwarding to %s", port, targetHost)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}

@@ -7,9 +7,12 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 // RequestKey uniquely identifies a request based on URL and method
@@ -197,7 +200,17 @@ func (cs *CacheServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	targetHost := "https://cms-new.skillbookacademy.com"
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	targetHost := os.Getenv("TARGET_SERVER_URL")
+
+	if targetHost == "" {
+		log.Fatal("TARGET_SERVER_URL environment variable is required")
+	}
+
 	cacheServer := NewCacheServer(5*time.Minute, targetHost)
 
 	server := &http.Server{

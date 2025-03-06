@@ -211,7 +211,7 @@ func main() {
 		log.Fatal("TARGET_SERVER_URL environment variable is required")
 	}
 
-	cacheServer := NewCacheServer(5*time.Minute, targetHost)
+	cacheServer := NewCacheServer(2*time.Minute, targetHost)
 	port := os.Getenv("PORT")
 
 	server := &http.Server{

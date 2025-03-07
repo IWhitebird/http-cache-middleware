@@ -23,7 +23,7 @@ clean:
 	rm -f $(BINARY_NAME)
 
 run: build
-	./$(BINARY_NAME)
+	./$(BUILD_FOLDER)/$(BINARY_NAME)
 
 test:
 	$(GOCMD) test -v ./...

@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -211,7 +212,14 @@ func main() {
 		log.Fatal("TARGET_SERVER_URL environment variable is required")
 	}
 
-	cacheServer := NewCacheServer(2*time.Minute, targetHost)
+	cache_ttl := 5
+	if ttl := os.Getenv("CACHE_TTL"); ttl != "" {
+		if val, err := strconv.Atoi(ttl); err == nil && val > 0 {
+			cache_ttl = val
+		}
+	}
+	fmt.Println(time.Duration(cache_ttl) * time.Minute)
+	cacheServer := NewCacheServer(time.Duration(cache_ttl)*time.Minute, targetHost)
 	port := os.Getenv("PORT")
 
 	server := &http.Server{
